@@ -10,7 +10,6 @@ contract AssetCovenant() {
   require(tx.outputs[2].lockingBytecode == tx.inputs[2].lockingBytecode);
   require(tx.outputs[2].tokenCategory == tx.inputs[2].tokenCategory);
 
-
-  require(tx.inputs[1].outpointTransactionHash== tx.inputs[2].outpointTransactionHash);
+  require(tx.inputs[1].outpointTransactionHash == tx.inputs[2].outpointTransactionHash);
  }
 }

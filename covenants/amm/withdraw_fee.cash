@@ -7,12 +7,9 @@ contract WithdrawFee(bytes20 pubkeyHash) {
   require(version > 0);
   bytes category = tx.inputs[1].tokenCategory;
   require(this.activeInputIndex == 0);
-  //require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
   require(tx.outputs[0].nftCommitment == tx.inputs[0].nftCommitment);
   require(tx.outputs[0].tokenCategory == category);
   require(int(tx.inputs[1].nftCommitment) == 0);
-
-
 
   bytes25 feeToLock = new LockingBytecodeP2PKH(pubkeyHash);
   require(tx.inputs[3].lockingBytecode == feeToLock);
