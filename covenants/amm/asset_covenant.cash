@@ -1,0 +1,16 @@
+pragma cashscript ^0.8.0;
+
+
+contract AssetCovenant() {
+ function spend() {
+  int constant version = 1;
+  require(version > 0);
+
+  require(this.activeInputIndex == 2);
+  require(tx.outputs[2].lockingBytecode == tx.inputs[2].lockingBytecode);
+  require(tx.outputs[2].tokenCategory == tx.inputs[2].tokenCategory);
+
+
+  require(tx.inputs[1].outpointTransactionHash== tx.inputs[2].outpointTransactionHash);
+ }
+}

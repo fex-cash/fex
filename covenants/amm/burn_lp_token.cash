@@ -1,0 +1,31 @@
+pragma cashscript ^0.8.0;
+
+
+contract BurnLpToken() {
+ function spend(int r) {
+  int constant version = 1;
+  require(version > 0);
+  bytes category = tx.inputs[1].tokenCategory;
+  require(r < 1073741824);
+  require(this.activeInputIndex == 0);
+  require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+  require(tx.outputs[0].nftCommitment == tx.inputs[0].nftCommitment);
+  require(tx.outputs[0].tokenCategory == category);
+  require(int(tx.inputs[1].nftCommitment) == 0);
+
+  int tokenAmount = tx.inputs[2].tokenAmount;
+  int newTokenAmount = ((tokenAmount/1073741824)*r + ((tokenAmount%1073741824)*r + 1073741823)/1073741824);
+  require(tx.outputs[2].tokenAmount == newTokenAmount);
+
+  int bchValue = tx.inputs[2].value;
+  int newBchValue = ((bchValue/1073741824)*r + ((bchValue%1073741824)*r + 1073741823)/1073741824);
+  require(tx.outputs[2].value == newBchValue);
+
+  int lpTokenSupply = 4503599627370496 - tx.inputs[1].tokenAmount;
+  int newLpTokenSupply = ((lpTokenSupply/1073741824)*r + ((lpTokenSupply%1073741824)*r)/1073741824);
+  require(4503599627370496 - tx.outputs[1].tokenAmount == newLpTokenSupply);
+
+  int collectedFee = tx.inputs[1].value;
+  require(tx.outputs[1].value == collectedFee);
+ }
+}

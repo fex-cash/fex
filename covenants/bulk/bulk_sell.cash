@@ -1,0 +1,20 @@
+pragma cashscript ^0.8.0;
+
+contract SellTokenOrder(bytes category, int price, bytes20 maker, bytes feeLockingBytecode) {
+	function trade() {
+		require(this.activeInputIndex == 0);
+		if(tx.inputs[0].tokenCategory == category) {
+			require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(maker));
+			require(tx.outputs[0].value == price);
+			int fee = 6 * price / 1000;
+			if(fee > 60000) {
+				require(tx.outputs[1].lockingBytecode == feeLockingBytecode);
+				require(tx.outputs[1].value == fee);
+			}
+		}
+	}
+
+    function cancel() {
+        require(tx.inputs[0].lockingBytecode == new LockingBytecodeP2PKH(maker));
+    }
+}

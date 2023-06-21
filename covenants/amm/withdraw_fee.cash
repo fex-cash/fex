@@ -1,0 +1,28 @@
+pragma cashscript ^0.8.0;
+
+
+contract WithdrawFee(bytes20 pubkeyHash) {
+ function spend( bytes20 newHash) {
+  int constant version = 1;
+  require(version > 0);
+  bytes category = tx.inputs[1].tokenCategory;
+  require(this.activeInputIndex == 0);
+  //require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+  require(tx.outputs[0].nftCommitment == tx.inputs[0].nftCommitment);
+  require(tx.outputs[0].tokenCategory == category);
+  require(int(tx.inputs[1].nftCommitment) == 0);
+
+
+
+  bytes25 feeToLock = new LockingBytecodeP2PKH(pubkeyHash);
+  require(tx.inputs[3].lockingBytecode == feeToLock);
+
+  require(tx.outputs[2].tokenAmount == tx.inputs[2].tokenAmount);
+  require(tx.outputs[2].value == tx.inputs[2].value);
+  require(tx.outputs[1].tokenAmount == tx.inputs[1].tokenAmount);
+
+  bytes newContract = 0x14 + newHash + this.activeBytecode.split(21)[1];
+  bytes23 newContractLock = new LockingBytecodeP2SH20(hash160(newContract));
+  require(tx.outputs[0].lockingBytecode == newContractLock);
+ }
+}
