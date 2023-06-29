@@ -1,3 +1,4 @@
+## AMM Note
 The transaction that initializes the Amm Pool is also the Genesis Transaction that mints the liquidity token.  It has a total of 8 outputs, 6 of which are NFTs with `minting=false` and `mutable=false`. The following describes these 8 outputs in detail:
 
 0. CategoryCovenant, which is a P2PKH output where the "public key" is actually the traded token's category.
