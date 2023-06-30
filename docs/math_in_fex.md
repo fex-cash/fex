@@ -3,9 +3,10 @@
 #### Variable Definition
 
 ```
-// 2^30 is almost one billion
-let TwoExp30 = 1073741824
+let TwoExp30 = 1073741824; // 2 ** 30
 ```
+
+`TwoExp30` is roughly one billion, a large enough number.
 
 #### Purpose of Calculation
 
@@ -35,13 +36,13 @@ According to UniswapV2, when users add liquidity in AMM, we have the following f
 newLpTokenSupply  = lpTokenSupply * (totalTokenInPool+userInputToken) / totalTokenInPool
 ```
 
+`newLpTokenSupply` is the total supply of LP tokens in the pool after users add liquidity.
+
 Then:
 
 ```
 newLpTokenSupply = lpTokenSupply / ( totalTokenInPool / (totalTokenInPool+userInputToken) )
 ```
-
-`newLpTokenSupply` is the total supply of LP tokens in the pool after users add liquidity.
 
 Let `totalTokenInPool / (totalTokenInPool+userInputToken) = r / TwoExp30`, and apply the formula we derived above,
 we can obtain the following calculation code in `mint_lp_token.cash`:
@@ -55,7 +56,7 @@ Similarly, when users burn liquidity, there is the code in `burn_lp_token.cash`:
 int newLpTokenSupply = ((lpTokenSupply/1073741824)*r + ((lpTokenSupply%1073741824)*r)/1073741824);
 ```
 
-Likewise, when users buy or sell tokens, the code is: 
+Likewise, when users buy or sell tokens, the code is:
 ```
 // sell_token_to_pool.cash
 int newTokenAmount = (((tokenAmount/r)*1073741824) + ((tokenAmount%r)*1073741824 + r - 1)/r);
@@ -64,4 +65,4 @@ int newTokenAmount = (((tokenAmount/r)*1073741824) + ((tokenAmount%r)*1073741824
 int newTokenAmount = ((tokenAmount/1073741824)*r + ((tokenAmount%1073741824)*r + 1073741823)/1073741824);
 ```
 
-The last term `(r - 1) / r` is used to round the result upwards.
+The last term `... r - 1) / r` and `... 1073741823)/1073741824` is used to round the result upwards.
