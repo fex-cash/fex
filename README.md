@@ -1,2 +1,2 @@
 # fex
-A market for Cashtoken.
+A decentralized market of CashTokens for Bitcoin Cash.
