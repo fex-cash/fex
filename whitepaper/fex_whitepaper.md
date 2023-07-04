@@ -5,7 +5,6 @@ Fex.Cash is a decentralized market for trading CashTokens. It's built on the Bit
 
 Fex.Cash not only provides the order market that most PoW blockchain tokens already have, but also provides a UTXO-based AMM mechanism, allowing Bitcoin Cash users to fully enjoy decentralized trading capabilities, with a user experience comparable to EVM-compatible blockchains.
 
-[TOC]
 
 ## Introduction
 
