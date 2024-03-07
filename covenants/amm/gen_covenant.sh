@@ -5,3 +5,5 @@ gcc -E ./include/burn_lp_token.h       | gawk '!/^#/' | sed 's/; require/;\n  re
 gcc -E ./include/sell_token_to_pool.h  | gawk '!/^#/' | sed 's/; require/;\n  require/g' > sell_token_to_pool.cash
 gcc -E ./include/buy_token_from_pool.h | gawk '!/^#/' | sed 's/; require/;\n  require/g' > buy_token_from_pool.cash
 gcc -E ./include/withdraw_fee.h        | gawk '!/^#/' | sed 's/; require/;\n  require/g' > withdraw_fee.cash
+#gcc -E ./include/orderbook_buy.h  |gawk '!/^#/' > orderbook_buy.cash
+#gcc -E ./include/orderbook_sell.h  |gawk '!/^#/' > orderbook_sell.cash

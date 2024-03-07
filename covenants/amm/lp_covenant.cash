@@ -1,21 +1,22 @@
 pragma cashscript ^0.8.0;
 
-
 contract LpCovenant() {
- function spend() {
-  int constant version = 1;
-  require(version > 0);
-  require(this.activeInputIndex == 1);
-  bytes category = tx.inputs[1].tokenCategory;
+  function spend() {
+    int constant version = 1;
+    require(version > 0);
+    require(this.activeInputIndex == 1);
+    bytes category = tx.inputs[1].tokenCategory;
 
-  require(tx.outputs[1].lockingBytecode == tx.inputs[1].lockingBytecode);
-  require(tx.outputs[1].nftCommitment == tx.inputs[1].nftCommitment);
-  require(tx.outputs[1].tokenCategory == category);
+    require(tx.outputs[1].lockingBytecode == tx.inputs[1].lockingBytecode);
+    require(tx.outputs[1].nftCommitment == tx.inputs[1].nftCommitment);
+    require(tx.outputs[1].tokenCategory == category);
 
-  require(tx.inputs[0].tokenCategory == category);
-  int commitment = int(tx.inputs[0].nftCommitment);
-  require(1 <= commitment && commitment <= 5);
+    require(tx.inputs[0].tokenCategory == category);
+    int commitment = int(tx.inputs[0].nftCommitment);
+    require(1 <= commitment && commitment <= 5);
 
-  require(tx.inputs[1].outpointTransactionHash == tx.inputs[2].outpointTransactionHash);
- }
+    require(tx.inputs[1].outpointTransactionHash == tx.inputs[2].outpointTransactionHash);
+    require(tx.inputs[1].outpointIndex == 1);
+    require(tx.inputs[2].outpointIndex == 2);
+  }
 }

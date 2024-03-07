@@ -1,32 +1,33 @@
 pragma cashscript ^0.8.0;
 
-
 contract SellTokenToPool() {
- function spend(int r) {
-  int constant version = 1;
-  require(version > 0);
-  bytes category = tx.inputs[1].tokenCategory;
-  require(r < 1073741824);
-  require(this.activeInputIndex == 0);
-  require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
-  require(tx.outputs[0].nftCommitment == tx.inputs[0].nftCommitment);
-  require(tx.outputs[0].tokenCategory == category);
-  require(int(tx.inputs[1].nftCommitment) == 0);
+  function spend(int r) {
+    int constant version = 1;
+    require(version > 0);
+    require(r < 1073741824);
 
-  int tokenAmount = tx.inputs[2].tokenAmount;
-  int newTokenAmount = (((tokenAmount/r)*1073741824) + ((tokenAmount%r)*1073741824 + r - 1)/r);
-  int fee = (newTokenAmount-tokenAmount)/500;
-  int newPoolTokenAmount = newTokenAmount + fee;
-  require(tx.outputs[2].tokenAmount == newPoolTokenAmount);
+    bytes category = tx.inputs[1].tokenCategory;
+    require(this.activeInputIndex == 0);
+    require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+    require(tx.outputs[0].nftCommitment == tx.inputs[0].nftCommitment);
+    require(tx.outputs[0].tokenCategory == tx.inputs[0].tokenCategory);
+    require(tx.inputs[0].tokenCategory == category);
+    require(int(tx.inputs[1].nftCommitment) == 0);
 
-  int bchValue = tx.inputs[2].value;
-  int newBchValue = ((bchValue/1073741824)*r + ((bchValue%1073741824)*r + 1073741823)/1073741824);
-  fee = (bchValue - newBchValue)/500;
-  int newPoolBchValue = newBchValue + fee;
-  require(tx.outputs[2].value == newPoolBchValue);
+    int tokenAmount = tx.inputs[2].tokenAmount;
+    int newTokenAmount = (((tokenAmount/r)*1073741824) + ((tokenAmount%r)*1073741824 + r - 1)/r);
+    int fee = (newTokenAmount-tokenAmount)/500;
+    int newPoolTokenAmount = newTokenAmount + fee;
+    require(tx.outputs[2].tokenAmount == newPoolTokenAmount);
 
-  int collectedFee = tx.inputs[1].value;
-  require(tx.outputs[1].value == collectedFee + fee);
-  require(tx.outputs[1].tokenAmount == tx.inputs[1].tokenAmount);
- }
+    int bchValue = tx.inputs[2].value;
+    int newBchValue = ((bchValue/1073741824)*r + ((bchValue%1073741824)*r + 1073741823)/1073741824);
+    fee = (bchValue - newBchValue)/500;
+    int newPoolBchValue = newBchValue + fee;
+    require(tx.outputs[2].value == newPoolBchValue);
+
+    int collectedFee = tx.inputs[1].value;
+    require(tx.outputs[1].value == collectedFee + fee);
+    require(tx.outputs[1].tokenAmount == tx.inputs[1].tokenAmount);
+  }
 }

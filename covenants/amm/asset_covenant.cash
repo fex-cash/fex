@@ -1,15 +1,20 @@
 pragma cashscript ^0.8.0;
 
-
 contract AssetCovenant() {
- function spend() {
-  int constant version = 1;
-  require(version > 0);
+  function spend() {
+    int constant version = 1;
+    require(version > 0);
 
-  require(this.activeInputIndex == 2);
-  require(tx.outputs[2].lockingBytecode == tx.inputs[2].lockingBytecode);
-  require(tx.outputs[2].tokenCategory == tx.inputs[2].tokenCategory);
+    require(this.activeInputIndex == 2);
+    require(tx.outputs[2].lockingBytecode == tx.inputs[2].lockingBytecode);
+    require(tx.outputs[2].tokenCategory == tx.inputs[2].tokenCategory);
 
-  require(tx.inputs[1].outpointTransactionHash == tx.inputs[2].outpointTransactionHash);
- }
+    require(tx.inputs[0].tokenCategory == tx.inputs[1].tokenCategory);
+    int commitment = int(tx.inputs[0].nftCommitment);
+    require(1 <= commitment && commitment <= 5);
+
+    require(tx.inputs[1].outpointTransactionHash == tx.inputs[2].outpointTransactionHash);
+    require(tx.inputs[1].outpointIndex == 1);
+    require(tx.inputs[2].outpointIndex == 2);
+  }
 }
