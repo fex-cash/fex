@@ -14,7 +14,7 @@ contract SellTokenOrder(bytes category, int price, bytes20 maker, bytes feeLocki
 		}
 	}
 
-    function cancel() {
-        require(tx.inputs[0].lockingBytecode == new LockingBytecodeP2PKH(maker));
-    }
+  function cancel() {
+      require(tx.inputs[0].lockingBytecode == new LockingBytecodeP2PKH(maker));
+  }
 }
